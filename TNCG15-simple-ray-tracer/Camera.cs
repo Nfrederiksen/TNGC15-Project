@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Channels;
 using System.Threading.Tasks;
-using Accord.Statistics;
 using GlmNet;
 using COLOR_DOUBLE = GlmNet.vec3;
 using UTIL_ = TNCG15_simple_ray_tracer.Utilities;

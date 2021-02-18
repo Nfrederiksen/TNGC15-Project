@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GlmNet;
-
-namespace TNCG15_simple_ray_tracer
+﻿namespace TNCG15_simple_ray_tracer
 {
     public static class Constants
     {

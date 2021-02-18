@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Xml;
+﻿using System.Collections.Generic;
 using GlmNet;
 
 namespace TNCG15_simple_ray_tracer

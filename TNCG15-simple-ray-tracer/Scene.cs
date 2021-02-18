@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
-using System.Numerics;
 using GlmNet;
 using COLOR_DOUBLE = GlmNet.vec3;
 using UTIL_ = TNCG15_simple_ray_tracer.Utilities;
