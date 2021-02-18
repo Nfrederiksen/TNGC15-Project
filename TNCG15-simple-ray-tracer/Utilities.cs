@@ -4,7 +4,7 @@ using GlmNet;
 
 namespace TNCG15_simple_ray_tracer
 {
-    /* Class can Generate uniform random doubles */
+    /* Class houses relavant utility functions, most math related. */
     public class Utilities
     {
         public static double UniformRand()
