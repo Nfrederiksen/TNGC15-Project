@@ -1,0 +1,16 @@
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\TNCG15-simple-ray-tracer.exe.config
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\TNCG15-simple-ray-tracer.exe
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\TNCG15-simple-ray-tracer.pdb
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\GlmNet.dll
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\obj\Debug\net471\TNCG15-simple-ray-tracer.csprojAssemblyReference.cache
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\obj\Debug\net471\TNCG15-simple-ray-tracer.AssemblyInfoInputs.cache
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\obj\Debug\net471\TNCG15-simple-ray-tracer.AssemblyInfo.cs
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\obj\Debug\net471\TNCG15-simple-ray-tracer.csproj.CoreCompileInputs.cache
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\obj\Debug\net471\TNCG15-simple-ray-tracer.csproj.CopyComplete
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\obj\Debug\net471\TNCG15-simple-ray-tracer.exe
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\obj\Debug\net471\TNCG15-simple-ray-tracer.pdb
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\Accord.dll.config
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\Accord.dll
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\Accord.Math.Core.dll
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\Accord.Math.dll
+C:\Users\N I K K O\RiderProjects\TNCG15-simple-ray-tracer\TNCG15-simple-ray-tracer\bin\Debug\net471\Accord.Statistics.dll

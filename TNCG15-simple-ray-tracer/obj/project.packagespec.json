@@ -1,0 +1,50 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "C:\\Users\\N I K K O\\RiderProjects\\TNCG15-simple-ray-tracer\\TNCG15-simple-ray-tracer\\TNCG15-simple-ray-tracer.csproj",
+    "projectName": "TNCG15-simple-ray-tracer",
+    "projectPath": "C:\\Users\\N I K K O\\RiderProjects\\TNCG15-simple-ray-tracer\\TNCG15-simple-ray-tracer\\TNCG15-simple-ray-tracer.csproj",
+    "outputPath": "C:\\Users\\N I K K O\\RiderProjects\\TNCG15-simple-ray-tracer\\TNCG15-simple-ray-tracer\\obj\\",
+    "projectStyle": "PackageReference",
+    "fallbackFolders": [
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+    ],
+    "originalTargetFrameworks": [
+      "net471"
+    ],
+    "sources": {
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+      "https://api.nuget.org/v3/index.json": {}
+    },
+    "frameworks": {
+      "net471": {
+        "projectReferences": {}
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "net471": {
+      "dependencies": {
+        "Accord.Statistics": {
+          "target": "Package",
+          "version": "[3.8.2-alpha, )"
+        },
+        "GlmNet": {
+          "target": "Package",
+          "version": "[0.7.0, )"
+        }
+      },
+      "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+    }
+  },
+  "runtimes": {
+    "win7-x86": {
+      "#import": []
+    }
+  }
+}
