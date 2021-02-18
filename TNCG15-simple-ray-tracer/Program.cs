@@ -47,7 +47,7 @@ namespace TNCG15_simple_ray_tracer
             // Set the desired field of view.
             camera.Fov = (float)Math.PI / 1.5f;
             // Set the desired samples-per-pixel & sub-pixels.
-            camera.Spp = 10;
+            camera.Spp = 25;
             camera.SubPixels = 3;
             
             var stopWatch = Stopwatch.StartNew();  
