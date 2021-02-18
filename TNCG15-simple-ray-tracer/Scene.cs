@@ -208,6 +208,7 @@ namespace TNCG15_simple_ray_tracer
                         var triangleIntersections = DetectTriangleIntersections(rayToLight);
 
                         var lightDistance = UTIL_.Distance(mPoint, lightPoint);
+                        
                         if (sphereIntersections.Any())
                         {
                             var sIntersection = sphereIntersections.First();
@@ -227,17 +228,19 @@ namespace TNCG15_simple_ray_tracer
                             {// NOT VISIBLE! If it's shorter then the point is occluded from light.
                                 continue;
                             }
-
+                
                             // Calculate Geometric Term!
                             // Works Exactly like below. Advantage here being: We skip computing with cos(), its faster?
                             var alpha = glm.dot(mNormal, rayToLight.Direction);
-                            var beta = UTIL_.Clamp(glm.dot(lightTriangle.Normal,  rayToLight.Direction),
-                                0.0, 1.0);
-                            var geometric = alpha * beta / Math.Pow(lightDistance, 2);
+                            var beta = UTIL_.Clamp(glm.dot(glm.normalize(lightTriangle.Normal), 
+                                    glm.normalize(rayToLight.Direction)), 0.0, 1.0);
+                            var geometric = alpha * beta / Math.Pow(lightDistance*1.5f, 2);
 
                             var lightSurface = lightTriangle.Surface;
                             color += lightSurface.GetColor() * lightSurface.Emission * (float)geometric;
-                                                        
+
+                            //color = UTIL_.TruncateColorDouble(color);
+
                             /*
                             // Calculate Geometric Term!
                             var alpha2 = UTIL_.Angle(mNormal, rayToLight.Direction);

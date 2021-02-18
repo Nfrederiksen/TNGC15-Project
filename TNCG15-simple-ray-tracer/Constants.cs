@@ -11,8 +11,8 @@
         public const float INTERSECTION_MARGIN = 0.0001f;
         public const int INTERSECTION = 1;
         public const int NOT_INTERSECTION = 0;
-        public const int WIDTH = 48;
-        public const int HEIGHT = 48;
+        public const int WIDTH = 100;
+        public const int HEIGHT = 100;
         public const int MAX_DEPTH = 5;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Accord.Math;
 using Accord.Statistics.Distributions.Univariate;
 using GlmNet;
 
@@ -10,8 +9,8 @@ namespace TNCG15_simple_ray_tracer
     {
         public static double UniformRand()
         {
-            UniformContinuousDistribution _UCDRandom = new UniformContinuousDistribution(0.0,1.0);
-            return _UCDRandom.Generate();
+            UniformContinuousDistribution ucdRandom = new UniformContinuousDistribution(0.0,1.0);
+            return ucdRandom.Generate();
         }
 
         public static double RandMinMax(double min, double max)
@@ -88,6 +87,29 @@ namespace TNCG15_simple_ray_tracer
             }
 
             return val;
+        }
+        public static float TruncateNormalized(float val)
+        {
+            if (val < 0 )
+            {
+                val = 0;
+            }
+
+            if (val > 1f)
+            {
+                val = 1f;
+            }
+
+            return val;
+        }
+        
+        public static vec3 TruncateColorDouble(vec3 colorDouble)
+        {
+            colorDouble.x = TruncateNormalized(colorDouble.x);
+            colorDouble.y = TruncateNormalized(colorDouble.y);
+            colorDouble.z = TruncateNormalized(colorDouble.z);
+
+            return colorDouble;
         }
         
     }

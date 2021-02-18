@@ -15,18 +15,18 @@ namespace TNCG15_simple_ray_tracer
         // Fields
         // Key: Where camera is positioned.
         // Value: Camera's looking direction.
-        private KeyValuePair<vec3, vec3> _cameraPos1 = new KeyValuePair<vec3, vec3>(
+        private readonly KeyValuePair<vec3, vec3> _cameraPos1 = new KeyValuePair<vec3, vec3>(
             new vec3(0.0f),
             new vec3(0.0f, 0.0f, 1.0f));
-        private KeyValuePair<vec3, vec3> _cameraPos2 = new KeyValuePair<vec3, vec3>(
+        private readonly KeyValuePair<vec3, vec3> _cameraPos2 = new KeyValuePair<vec3, vec3>(
             new vec3(1.0f, 2.5f, 2.5f),
             new vec3(-0.5f, -0.6f, 1.0f));
-        // --2D 1000x1000 Array of Pixels.
-        private Pixel[,] _pixelArray = new Pixel[CONST_.WIDTH,CONST_.HEIGHT];
+        // --2D width x height Array of Pixels.
+        private readonly Pixel[,] _pixelArray = new Pixel[CONST_.WIDTH,CONST_.HEIGHT];
         // --FOV in Radians.
         private float _fov = ((float) Math.PI) / 1.5f;
-        // --A boolean to flip between cameras (eyes).
-        private bool _eyeBeingUsed;
+        // --A boolean to flip between cameras.
+        private bool _CamBeingUsed;
         // --Sample Per Pixel.
         private int _spp;
         
@@ -54,30 +54,27 @@ namespace TNCG15_simple_ray_tracer
 
         public KeyValuePair<vec3, vec3> GetCamera()
         {
-            return _eyeBeingUsed ? _cameraPos1 : _cameraPos2;
+            return _CamBeingUsed ? _cameraPos1 : _cameraPos2;
         }
             
         // Constructor
         public Camera()
         {
-            _eyeBeingUsed = true;
+            _CamBeingUsed = true;
         }
         // Methods
         public void SwitchCamera()
         {
-            if (_eyeBeingUsed)
+            if (_CamBeingUsed)
             {
-                _eyeBeingUsed = false;
+                _CamBeingUsed = false;
             }
             else
             {
-                _eyeBeingUsed = true;
+                _CamBeingUsed = true;
             }
         }
-        public struct MaxObj
-        {
-            public double max;
-        }
+        
         public void CreateImage(Scene scene, string filename)
         {
             Console.Write(@"
@@ -87,124 +84,13 @@ namespace TNCG15_simple_ray_tracer
 ");
             Console.WriteLine("Creating a {0}x{1} image...", CONST_.WIDTH, CONST_.HEIGHT);
             Console.WriteLine("SPP: {0}, Sub-Pixels: {1}, Using Camera: {2}", _spp, _subPixels, 1);
+            // 1) Get rays going through pixels.
             CreatePixels();
-            var max = new MaxObj();
-            CastRays(scene, max, filename);
-            
+            // 2) Get color for pixel based on the rays path. AND max intensity value for a RGB channel.
+            var maxIntensity = CastRays(scene);
+            // 3) Put pixel values in file 
+            WriteToFile(filename, maxIntensity);
             Console.WriteLine("DONE!");
-            
-        }
-
-        public void WriteToFile(string filename, double max)
-        {
-            
-            Console.WriteLine("\n\nWriting image... (Max Intensity:'{0}')", max);
-            //Use writer to write the text part of the encoding
-            var writer = new StreamWriter(filename);
-            writer.WriteLine("P3");
-            writer.WriteLine($"{CONST_.WIDTH}  {CONST_.HEIGHT}");
-            writer.WriteLine("255");
-            
-            
-            for (var x = 0; x < CONST_.WIDTH; x++)
-            {
-            //Parallel.For(0, CONST_.WIDTH, x =>
-            //{
-                for (var y = 0; y < CONST_.HEIGHT; y++)
-                {
-                    var color = _pixelArray[x, y].ColorDouble;
-                    writer.Write((int)(255 * (color.x / max)));
-                    writer.Write(" ");
-                    writer.Write((int)(255 * (color.y / max)));
-                    writer.Write(" ");
-                    writer.Write((int)(255 * (color.z / max)));
-                    writer.Write(" ");
-                }
-            //});
-
-            }
-            writer.Close();
-            Console.WriteLine("Wrote image to '{0}'...", filename);
-            
-        }
-        public void CastRays(Scene scene, MaxObj max, string filename)
-        {
-            
-            double maximum = 0.0;
-            Console.WriteLine("Casting rays onto the scene...");
-            var count = 0;
-            var percent = 10.0f;
-            var total = CONST_.WIDTH * CONST_.HEIGHT;
-            
-            
-            // SOME THREADING TO BOOST RENDER TIMES.
-
-            Parallel.For(0, _pixelArray.GetLength(0), i =>
-            {
-             for (int j = 0; j < _pixelArray.GetLength(1); j++)
-                {
-                    var progressBar = 100.0f * (float) count / total;
-                    // Printing the PRogress.
-                    if ((int)Math.Floor(progressBar / percent) == 1)
-                    {
-                        Console.WriteLine((int)progressBar + "%");
-                        percent += 10.0f;
-                    }
-                    var color = new vec3(0);
-                    var rays = _pixelArray[i, j].RayList;
-
-
-                    
-                    foreach (var ray in rays)
-                    {
-                       
-                        for(int k = 0; k < _spp; k++)
-                        {    // Colors the pixel w/ each sample.
-                            color += CastRay(scene, ray, 0);
-                        }
-                    }
-                    color /= _spp * _subPixels * _subPixels;
-                    _pixelArray[i, j].ColorDouble = color;
-                    maximum = Math.Max(maximum, Math.Max(color.x, Math.Max(color.y, color.z)));
-                    count += 1; // This is for the progress bar.
-                }
-            });
-
-/*
-            for(int i = 0; i < _pixelArray.GetLength(0); i++)
-            {
-                
-                for (int j = 0; j < _pixelArray.GetLength(1); j++)
-                {
-                    var progressBar = 100.0f * (float) count / total;
-                    // Printing the PRogress.
-                    if ((int)Math.Floor(progressBar / percent) == 1)
-                    {
-                        Console.WriteLine(progressBar + "%");
-                        percent += 10.0f;
-                    }
-                    var color = new vec3(0);
-                    var rays = _pixelArray[i, j].RayList;
-
-
-                    
-                    foreach (var ray in rays)
-                    {
-                       
-                        for(int k = 0; k < _spp; k++)
-                        {    // Colors the pixel w/ each sample.
-                            color += CastRay(scene, ray, 0);
-                        }
-                    }
-                    color /= _spp * _subPixels * _subPixels;
-                    _pixelArray[i, j].ColorDouble = color;
-                    maximum = Math.Max(maximum, Math.Max(color.x, Math.Max(color.y, color.z)));
-                    count += 1; // This is for the progress bar.
-                }
-            }
-*/
-            max.max = maximum;
-            WriteToFile(filename, max.max);
         }
 
         private void CreatePixels()
@@ -247,6 +133,47 @@ namespace TNCG15_simple_ray_tracer
             
             return ray;
         }
+
+        public double CastRays(Scene scene)
+        {
+            double maximum = 0.0;
+            Console.WriteLine("Casting rays onto the scene...");
+            var count = 0;
+            var percent = 10.0f;
+            var total = CONST_.WIDTH * CONST_.HEIGHT;
+
+            // SOME THREADING TO BOOST RENDER TIMES.
+            Parallel.For(0, _pixelArray.GetLength(0), i =>
+            {
+             for (int j = 0; j < _pixelArray.GetLength(1); j++)
+             {
+                    var progressBar = 100.0f * (float) count / total;
+                    // Printing the PRogress.
+                    if ((int)Math.Floor(progressBar / percent) == 1)
+                    {
+                        Console.WriteLine((int)progressBar + "%");
+                        percent += 10.0f;
+                    }
+                    var color = new vec3(0);
+                    var rays = _pixelArray[i, j].RayList;
+                    foreach (var ray in rays)
+                    {
+                       
+                        for(int k = 0; k < _spp; k++)
+                        {    // Colors the pixel w/ each sample.
+                            color += CastRay(scene, ray, 0);
+                        }
+                    }
+                    color /= _spp * _subPixels * _subPixels;
+                    _pixelArray[i, j].ColorDouble = color;
+                    maximum = Math.Max(maximum, Math.Max(color.x, Math.Max(color.y, color.z)));
+                    count += 1; // This is for the progress bar.
+             }
+            });
+            
+            return maximum;
+        }
+        
         /// <summary>
         /// Recursive function that collects the total color emitted from a contact point by
         /// traveling with a bouncing ray collecting color from other points along the way.
@@ -292,25 +219,25 @@ namespace TNCG15_simple_ray_tracer
                 // No need to care about the second or third intersection points, as they
                 // are getting occluded from the first one.
                 var tI = tIntersections.First();
-                var tI_Triangle = tI.Triangle;
-                var tI_Surface = tI_Triangle.Surface;
-                var tI_Normal = tI_Triangle.Normal;
+                var triangle = tI.Triangle;
+                var surface = triangle.Surface;
+                var pointNormal = triangle.Normal;
             
-                // --[ Base Case #1 ]--: Triangle in question is a light source triangle.
-                if (tI_Surface.HasReflectionModel(CONST_.LIGHTSOURCE))
+                // --[ Base Case #1 ]-- Triangle in question is a light source triangle.
+                if (surface.HasReflectionModel(CONST_.LIGHTSOURCE))
                 {
                     // We hit light. Color value for this point is bright white.
-                    return color = tI_Surface.GetColor();
+                    return color = surface.GetColor();
                 }
                 // --( UPDATE: color )--
                 // Add surface point's emitted color according to:
                 // 1) Reflection model.
                 // 2) Outgoing reflection incident angle.
                 // 3) Direct light contribution (influenced by occlusion & incident angle).
-                var outRay = tI_Surface.BounceRay(mRay, tI.Point, tI_Normal);
-                var theta = UTIL_.Angle(outRay.Direction, tI_Normal);
-                var lightContribution = mScene.GetLightContribution(tI.Point, tI_Normal);
-                var emittedColor = tI_Surface.Reflect() * glm.cos(theta) * lightContribution;
+                var outRay = surface.BounceRay(mRay, tI.Point, pointNormal);
+                var theta = UTIL_.Angle(outRay.Direction, pointNormal);
+                var lightContribution = mScene.GetLightContribution(tI.Point, pointNormal);
+                var emittedColor = surface.Reflect() * glm.cos(theta) * lightContribution;
                 color += emittedColor;
 
                 // --( BOUNCE: Does the ray path stop or not? )--
@@ -318,16 +245,17 @@ namespace TNCG15_simple_ray_tracer
                 if (mDepth < CONST_.MAX_DEPTH || UTIL_.UniformRand() < threshold)
                 {
                     // Increment the depth-value, unless we're bouncing on a specular surface (mirrors).
-                    var nextDepth = tI_Surface.HasReflectionModel(CONST_.SPECULAR) ? mDepth : mDepth + 1;
+                    var nextDepth = surface.HasReflectionModel(CONST_.SPECULAR) ? mDepth : mDepth + 1;
                     // Recursion: Until we hit the 'max_depth' or randomly get below 'threshold'.
-                    color += CastRay(mScene, outRay, nextDepth) * tI_Surface.ReflectionCoefficient;
+                    color += CastRay(mScene, outRay, nextDepth) * surface.ReflectionCoefficient;
                 }
-                // --( INDIRECT: Points that are not in direct light get color from indir.light )--
-                color += tI_Surface.Reflect() * glm.cos(theta)
-                                              * new vec3(0.5f); // Last term used to experiment. Can be removed.
+                // --( TEMPORARY FIX: Points that are not in direct light get color from indir.light )--
+                // Uncomment to get lighter images.
+                color += surface.Reflect() * glm.cos(theta)
+                                            * new vec3(0.5f); // Last term used to experiment. Can be removed.
             }
             else
-            {    // --[ Base Case #2 ]--: Ray never intersected with any spheres or triangles.
+            {    // --[ Base Case #2 ]-- Ray never intersected with any spheres or triangles.
                 if (sIntersections.Count == 0)
                 {    
                      // Return empty color (black).
@@ -338,6 +266,7 @@ namespace TNCG15_simple_ray_tracer
                 var sphere = sI.Sphere;
                 var surface = sphere.Surface;
                 vec3 pointNormal = sphere.CalcNormal(sI.Point);
+                
                 var outRay = surface.BounceRay(mRay, sI.Point, pointNormal);
                 var theta = UTIL_.Angle(outRay.Direction, pointNormal);
                 var lightContribution = mScene.GetLightContribution(sI.Point, pointNormal);
@@ -352,21 +281,51 @@ namespace TNCG15_simple_ray_tracer
                     var nextDepth = surface.HasReflectionModel(CONST_.SPECULAR) ? mDepth : mDepth + 1;
                     color += CastRay(mScene, outRay, nextDepth) * surface.ReflectionCoefficient;
                 }
-                color += surface.Reflect() * glm.cos(theta)
-                                           * new vec3(0.5f); // Last term for experiment. Can be removed.
-
+                // --( TEMPORARY FIX: Points that are not in direct light get color from indir.light )--
+                // Uncomment to get lighter images.
+                //color += surface.Reflect() * glm.cos(theta)
+                //                         * new vec3(0.5f); // Last term for experiment. Can be removed.
             }
-            
-            /*
-            int contrast = 88;
-            var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
-            var newR = UTIL_.Truncate(factor * (color.x*255 - 128) + 128);
-            var newG = UTIL_.Truncate(factor * (color.y*255 - 128) + 128);
-            var newB = UTIL_.Truncate(factor * (color.z*255 - 128) + 128);
-                
-            color = new vec3(newR/255f, newG/255, newB/255);
-            */
+
             return color;
+        }
+        
+        public void WriteToFile(string filename, double max)
+        {
+            Console.WriteLine("\n\nWriting image... (Max Intensity:'{0}')", max);
+            //Use Streamwriter to write the text part of the encoding
+            var writer = new StreamWriter(filename);
+            writer.WriteLine("P3");
+            writer.WriteLine($"{CONST_.WIDTH}  {CONST_.HEIGHT}");
+            writer.WriteLine("255");
+
+            for (var x = 0; x < CONST_.WIDTH; x++)
+            {
+                for (var y = 0; y < CONST_.HEIGHT; y++)
+                {
+                    var color = _pixelArray[x, y].ColorDouble;
+                    
+                    /*                //THIS NEEDS WORK...
+                    // --[Extra Image Processing]-- Set the contrast if needed.
+                    int contrast = 128;
+                    var factor = (255 * (contrast + 255)) / (255 * (255 - contrast));
+                    var newR = (factor * (color.x*255 - 128) + 128);
+                    var newG = (factor * (color.y*255 - 128) + 128);
+                    var newB = (factor * (color.z*255 - 128) + 128);
+                        
+                    color = new vec3(UTIL_.Truncate(newR/255f), UTIL_.Truncate(newG/255), UTIL_.Truncate(newB/255));
+                    */
+                    
+                    writer.Write((int)(255 * (color.x / max)));
+                    writer.Write(" ");
+                    writer.Write((int)(255 * (color.y / max)));
+                    writer.Write(" ");
+                    writer.Write((int)(255 * (color.z / max)));
+                    writer.Write(" ");
+                }
+            }
+            writer.Close();
+            Console.WriteLine("Wrote image to '{0}'...", filename);
         }
     }
 }
