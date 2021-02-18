@@ -1,4 +1,5 @@
-﻿using System;
+﻿// [ Written by nicfr436 & jakgu444 -2020- ]
+using System;
 using System.Diagnostics;
 using GlmNet;
 
@@ -51,7 +52,7 @@ namespace TNCG15_simple_ray_tracer
             
             var stopWatch = Stopwatch.StartNew();  
             // ...Let's render a ray-traced image of the scene!
-            camera.CreateImage(scene, "rayTracedImage.ppm");
+            camera.CreateImage(scene, "ray_traced_image.ppm");
             Console.WriteLine("Execution time = {0} seconds\n", stopWatch.Elapsed.TotalSeconds);  
             stopWatch.Stop();
         }
