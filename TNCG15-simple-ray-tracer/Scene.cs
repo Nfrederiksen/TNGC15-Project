@@ -234,7 +234,7 @@ namespace TNCG15_simple_ray_tracer
                             var alpha = glm.dot(mNormal, rayToLight.Direction);
                             var beta = UTIL_.Clamp(glm.dot(glm.normalize(lightTriangle.Normal), 
                                     glm.normalize(rayToLight.Direction)), 0.0, 1.0);
-                            var geometric = alpha * beta / Math.Pow(lightDistance*1.5f, 2);
+                            var geometric = alpha * beta / Math.Pow(lightDistance*1f, 2);
 
                             var lightSurface = lightTriangle.Surface;
                             color += lightSurface.GetColor() * lightSurface.Emission * (float)geometric;
