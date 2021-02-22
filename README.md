@@ -1,5 +1,5 @@
 # TNGC15-Project
-This project is a simple ray tracer written in C#, as part of the course Global Illumination and Rendering.
+This project uses object-oriented programming in C# to create a simple monte carlo ray tracer, as part of the course Global Illumination and Rendering.
 
 ![raytraced_image25spp_A](https://github.com/Nfrederiksen/TNGC15-Project/blob/master/TNCG15-simple-ray-tracer/bin/Debug/net471/ppnngg/rayTracedImage480x480_01.png?raw=true)
 [Normal]
